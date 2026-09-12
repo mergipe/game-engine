@@ -1,7 +1,7 @@
 PlayerController = EntityScript:new()
 
-PlayerController.rotationSpeed = 300000000
-PlayerController.accelerationMagnitude = 2000000
+PlayerController.rotationSpeed = 0
+PlayerController.accelerationMagnitude = 0
 
 function PlayerController:OnStart()
   self.rotationValue = 0

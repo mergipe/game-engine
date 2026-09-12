@@ -31,7 +31,8 @@ components:
   scripts:
     - class_id: scripts/PlayerController.lua
       attributes:
-        rotation_speed: 0
+        rotationSpeed: 300000000
+        accelerationMagnitude: 2000000
     - class_id: scripts/Health.lua
       attributes:
         health: 100

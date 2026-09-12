@@ -48,8 +48,8 @@ entities:
       scripts:
         - class_id: scripts/PlayerController.lua
           attributes:
-            rotation_speed: 300000000
-            acceleration_magnitude: 2000000
+            rotationSpeed: 300000000
+            accelerationMagnitude: 2000000
   - components:
       template: templates/player.template
       id: Player2
@@ -77,8 +77,8 @@ entities:
       scripts:
         - class_id: scripts/PlayerController.lua
           attributes:
-            rotation_speed: 500000000
-            acceleration_magnitude: 3000000
+            rotationSpeed: 500000000
+            accelerationMagnitude: 3000000
   - components:
       template: templates/planet.template
       id: Planet
