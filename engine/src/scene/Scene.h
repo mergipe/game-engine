@@ -53,7 +53,6 @@ namespace Engine
         void DestroyEntities();
         void AddComponents();
         void RemoveComponents();
-        void AddScript(Entity* entity, ScriptInstance&& scriptInstance);
         void AddScripts();
         void RemoveScripts();
         void InvokeOnAllScripts(const std::function<void(ScriptInstance&)>& function);

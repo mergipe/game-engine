@@ -248,17 +248,12 @@ namespace Engine
         m_componentsToRemove.clear();
     }
 
-    void Scene::AddScript(Entity* entity, ScriptInstance&& scriptInstance)
-    {
-        if (const auto scriptInstancePtr{entity->AddScript(std::move(scriptInstance))}) {
-            m_scriptsToStart.push_back(scriptInstancePtr);
-        }
-    }
-
     void Scene::AddScripts()
     {
         for (auto& [entity, scriptInstance] : m_scriptsToAdd) {
-            AddScript(entity, std::move(scriptInstance));
+            if (const auto scriptInstancePtr{entity->AddScript(std::move(scriptInstance))}) {
+                m_scriptsToStart.push_back(scriptInstancePtr);
+            }
         }
         m_scriptsToAdd.clear();
     }
@@ -360,7 +355,7 @@ namespace Engine
             std::optional scriptInstance{
                 Locator::GetScriptSystem()->CreateScriptInstance(entityRef, scriptClassData)};
             if (scriptInstance) {
-                AddScript(&entityRef, std::move(scriptInstance.value()));
+                m_scriptsToAdd.emplace_back(&entityRef, std::move(scriptInstance.value()));
             }
         }
     }
