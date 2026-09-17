@@ -2,7 +2,6 @@
 
 #include "FileSystem.h"
 #include "StringId.h"
-#include "resources/ResourceManager.h"
 
 #include <filesystem>
 #include <glm/glm.hpp>
@@ -51,12 +50,10 @@ namespace Engine
         static inline VideoConfig s_videoConfig{};
         static inline Physics2DConfig s_physics2DConfig{};
         static inline GameConfig s_gameConfig{};
-        static inline const std::filesystem::path s_engineConfigPath{FileSystem::GetAbsolutePath("config")};
-        static inline const std::filesystem::path s_videoConfigPath{
-            ResourceManager::GetResourceAbsolutePath("video.config")};
-        static inline const std::filesystem::path s_physics2DConfigPath{
-            ResourceManager::GetResourceAbsolutePath("physics2d.config")};
-        static inline const std::filesystem::path s_gameConfigPath{
-            ResourceManager::GetResourceAbsolutePath("game.config")};
+        static inline const std::filesystem::path s_engineConfigPath{
+            FileSystem::GetAbsoluteEnginePath("config")};
+        static inline std::filesystem::path s_videoConfigPath{};
+        static inline std::filesystem::path s_physics2DConfigPath{};
+        static inline std::filesystem::path s_gameConfigPath{};
     };
 } // namespace Engine

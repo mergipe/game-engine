@@ -33,7 +33,7 @@ namespace Engine
         };
 
         static inline const std::filesystem::path s_scriptingLibPath{
-            FileSystem::GetAbsolutePath("scripting")};
+            FileSystem::GetAbsoluteEnginePath("scripting")};
 
         ScriptClass* GetScriptClass(const StringId& scriptClassId) const;
         void LoadProjectScripts();

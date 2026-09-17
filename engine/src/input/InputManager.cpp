@@ -14,8 +14,7 @@ namespace Engine
 {
     void InputManager::Init()
     {
-        const std::filesystem::path inputConfigFilePath{
-            ResourceManager::GetResourceAbsolutePath("input.config")};
+        const std::filesystem::path inputConfigFilePath{FileSystem::GetAbsoluteProjectPath("input.config")};
         m_inputConfig = InputConfigLoader::Load(inputConfigFilePath);
         StringId emptyScopeId{SID("empty")};
         m_inputConfig.inputScopes.insert(std::make_pair(emptyScopeId, InputScope{emptyScopeId}));

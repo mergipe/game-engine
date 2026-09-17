@@ -43,7 +43,7 @@ namespace Engine
     private:
         static constexpr auto s_levelEnvVariableName{"LOGGER_LEVEL"};
         static constexpr auto s_name{"logger"};
-        static inline const std::filesystem::path s_logFilePath{FileSystem::GetAbsolutePath("logs") /
+        static inline const std::filesystem::path s_logFilePath{FileSystem::GetAbsoluteEnginePath("logs") /
                                                                 "log.txt"};
         std::shared_ptr<spdlog::logger> m_logger{spdlog::stdout_color_mt(s_name)};
     };

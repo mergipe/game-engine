@@ -28,7 +28,7 @@ namespace Engine
 
     private:
         static std::string ReadShaderFile(const std::filesystem::path& relativePath);
-        static inline const std::filesystem::path s_shadersPath{FileSystem::GetAbsolutePath("shaders")};
+        static inline const std::filesystem::path s_shadersPath{FileSystem::GetAbsoluteEnginePath("shaders")};
         std::unordered_map<StringId, std::unique_ptr<Shader>> m_shaders{};
     };
 } // namespace Engine

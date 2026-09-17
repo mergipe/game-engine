@@ -1,6 +1,5 @@
 #include "ConfigManager.h"
 
-#include "Locator.h"
 #include "Yaml.h"
 
 namespace Engine
@@ -71,6 +70,9 @@ namespace Engine
 
     void ConfigManager::Init()
     {
+        s_videoConfigPath = FileSystem::GetAbsoluteProjectPath("video.config");
+        s_physics2DConfigPath = FileSystem::GetAbsoluteProjectPath("physics2d.config");
+        s_gameConfigPath = FileSystem::GetAbsoluteProjectPath("game.config");
         ParseVideoConfig();
         ParsePhysics2DConfig();
         ParseGameConfig();

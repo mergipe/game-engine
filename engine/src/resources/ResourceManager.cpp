@@ -24,6 +24,7 @@ namespace Engine
 
     void ResourceManager::Init()
     {
+        s_resourcesPath = FileSystem::GetAbsoluteProjectPath("resources");
         constexpr int width{32};
         constexpr int height{width};
         constexpr int channels{3};

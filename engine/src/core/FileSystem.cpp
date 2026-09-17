@@ -7,15 +7,18 @@
 
 namespace Engine
 {
-    std::filesystem::path FileSystem::GetBasePath()
+    void FileSystem::SetProjectPath(const std::filesystem::path& projectPath) { s_projectPath = projectPath; }
+
+    std::filesystem::path FileSystem::GetProjectPath() { return s_projectPath; }
+
+    std::filesystem::path FileSystem::GetAbsoluteEnginePath(std::string_view relativePath)
     {
-        static std::filesystem::path s_basePath{std::filesystem::canonical(ENGINE_BASE_DIR)};
-        return s_basePath;
+        return s_enginePath / relativePath;
     }
 
-    std::filesystem::path FileSystem::GetAbsolutePath(std::string_view relativePath)
+    std::filesystem::path FileSystem::GetAbsoluteProjectPath(std::string_view relativePath)
     {
-        return GetBasePath() / relativePath;
+        return s_projectPath / relativePath;
     }
 
     bool FileSystem::IsDirectory(const std::filesystem::path& path)

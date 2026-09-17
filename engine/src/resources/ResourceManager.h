@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Texture2D.h"
-#include "core/FileSystem.h"
 #include "core/StringId.h"
 #include "core/Yaml.h"
 
@@ -10,7 +9,6 @@
 #include <filesystem>
 #include <memory>
 #include <optional>
-#include <string_view>
 #include <unordered_map>
 
 namespace Engine
@@ -32,6 +30,7 @@ namespace Engine
     class ResourceManager final
     {
     public:
+        // FIXME: i think static is not ideal because project path starts empty
         static const std::filesystem::path& GetResourcesPath();
         static std::filesystem::path GetResourceAbsolutePath(const std::filesystem::path& relativePath);
         static std::filesystem::path GetResourceRelativePath(const std::filesystem::path& absolutePath);
@@ -52,7 +51,7 @@ namespace Engine
                       const YAML::Node& metadataNode);
         void LoadEntityTemplate(const StringId& id, const std::filesystem::path& filePath);
 
-        static inline const std::filesystem::path s_resourcesPath{FileSystem::GetAbsolutePath("resources")};
+        static inline std::filesystem::path s_resourcesPath{};
         static inline const auto s_metadataFileExtension{".metadata"};
 
         entt::registry m_templateRegistry{};
