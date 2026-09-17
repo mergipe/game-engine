@@ -53,9 +53,11 @@ namespace Engine
         void DestroyEntities();
         void AddComponents();
         void RemoveComponents();
+        void AddScript(Entity* entity, ScriptInstance&& scriptInstance);
         void AddScripts();
         void RemoveScripts();
         void InvokeOnAllScripts(const std::function<void(ScriptInstance&)>& function);
+        void StartScripts();
 
         void OnAddRigidBody2DComponent(entt::registry& registry, entt::entity entity);
         void OnAddBoxCollider2DComponent(entt::registry& registry, entt::entity entity);
@@ -65,9 +67,9 @@ namespace Engine
         void OnRemoveBoxCollider2DComponent(entt::registry& registry, entt::entity entity);
         void OnRemoveCircleCollider2DComponent(entt::registry& registry, entt::entity entity);
 
-        void StartPhysics2D();
-        void StartPlayerInput();
-        void StartScripts();
+        void InitPhysics2D();
+        void InitPlayerInput();
+        void InitScripts();
 
         void OnInputCommand(const InputEvent& event);
 
@@ -84,6 +86,7 @@ namespace Engine
         std::vector<EntityComponent> m_componentsToAdd{};
         std::vector<EntityComponent> m_componentsToRemove{};
         std::vector<EntityScript> m_scriptsToAdd{};
+        std::vector<ScriptInstance*> m_scriptsToStart{};
         std::vector<EntityScriptClassId> m_scriptsToRemove{};
 
         entt::registry* m_mainRegistry{};

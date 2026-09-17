@@ -45,7 +45,7 @@ namespace Engine
         return nullptr;
     }
 
-    void Entity::AddScript(ScriptInstance&& scriptInstance)
+    ScriptInstance* Entity::AddScript(ScriptInstance&& scriptInstance)
     {
         const auto scriptClassId{scriptInstance.GetClass().GetId()}; // should be by copy!
         const auto scriptInstanceComponent{ScriptInstanceComponent{std::move(scriptInstance)}};
@@ -53,7 +53,9 @@ namespace Engine
         storage.push(m_handle.entity(), &scriptInstanceComponent);
         if (storage.contains(m_handle.entity())) {
             GetOrAddComponent<ScriptBaseComponent>().classIds.push_back(scriptClassId);
+            return &storage.get(m_handle.entity()).instance;
         }
+        return nullptr;
     }
 
     void Entity::RemoveScript(const StringId& scriptClassId)

@@ -73,9 +73,9 @@ namespace Engine
         }
 
         SetRegistryListeners();
-        StartPhysics2D();
-        StartScripts();
-        StartPlayerInput();
+        InitPhysics2D();
+        InitScripts();
+        InitPlayerInput();
     }
 
     void Scene::Update(float timeStep)
@@ -83,6 +83,7 @@ namespace Engine
         CreateEntities();
         AddComponents();
         AddScripts();
+        StartScripts();
 
         auto* eventBus{Locator::GetEventBus()};
         eventBus->Reset();
@@ -247,10 +248,17 @@ namespace Engine
         m_componentsToRemove.clear();
     }
 
+    void Scene::AddScript(Entity* entity, ScriptInstance&& scriptInstance)
+    {
+        if (const auto scriptInstancePtr{entity->AddScript(std::move(scriptInstance))}) {
+            m_scriptsToStart.push_back(scriptInstancePtr);
+        }
+    }
+
     void Scene::AddScripts()
     {
         for (auto& [entity, scriptInstance] : m_scriptsToAdd) {
-            entity->AddScript(std::move(scriptInstance));
+            AddScript(entity, std::move(scriptInstance));
         }
         m_scriptsToAdd.clear();
     }
@@ -285,6 +293,14 @@ namespace Engine
                 function(storage.get(entity).instance);
             }
         }
+    }
+
+    void Scene::StartScripts()
+    {
+        for (const auto scriptInstance : m_scriptsToStart) {
+            scriptInstance->InvokeOnStart();
+        }
+        m_scriptsToStart.clear();
     }
 
     void Scene::OnAddRigidBody2DComponent(entt::registry& registry, entt::entity entity)
@@ -344,7 +360,7 @@ namespace Engine
             std::optional scriptInstance{
                 Locator::GetScriptSystem()->CreateScriptInstance(entityRef, scriptClassData)};
             if (scriptInstance) {
-                entityRef.AddScript(std::move(scriptInstance.value()));
+                AddScript(&entityRef, std::move(scriptInstance.value()));
             }
         }
     }
@@ -370,7 +386,7 @@ namespace Engine
         Locator::GetPhysicsEngine2D()->DestroyShape(collider.shapeId.value(), true);
     }
 
-    void Scene::StartPhysics2D()
+    void Scene::InitPhysics2D()
     {
         const auto view{m_mainRegistry->view<RigidBody2DComponent>()};
         for (const auto entity : view) {
@@ -384,7 +400,7 @@ namespace Engine
         }
     }
 
-    void Scene::StartPlayerInput()
+    void Scene::InitPlayerInput()
     {
         const auto view{m_mainRegistry->view<PlayerInputComponent>()};
         const StringId* defaultInputScope{};
@@ -412,13 +428,12 @@ namespace Engine
         }
     }
 
-    void Scene::StartScripts()
+    void Scene::InitScripts()
     {
         const auto scriptView{m_mainRegistry->view<const ScriptClassDatasComponent>()};
         for (const auto entity : scriptView) {
             OnAddScriptClassDatasComponent(*m_mainRegistry, entity);
         }
-        InvokeOnAllScripts([](ScriptInstance& scriptInstance) { scriptInstance.InvokeOnStart(); });
     }
 
     void Scene::OnInputCommand(const InputEvent& event)

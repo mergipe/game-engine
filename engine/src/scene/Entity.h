@@ -29,7 +29,7 @@ namespace Engine
         template <typename T> void RemoveComponentOnNextStep();
         [[nodiscard]] bool HasScript(const StringId& scriptClassId) const;
         [[nodiscard]] ScriptInstance* GetScript(const StringId& scriptClassId) const;
-        void AddScript(ScriptInstance&& scriptInstance);
+        ScriptInstance* AddScript(ScriptInstance&& scriptInstance);
         void RemoveScript(const StringId& scriptClassId);
         std::optional<ScriptHandle> AddScriptOnNextStep(const StringId& scriptClassId);
         void RemoveScriptOnNextStep(const StringId& scriptClassId);
