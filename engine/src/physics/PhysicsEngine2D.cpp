@@ -34,12 +34,14 @@ namespace Engine
         worldDef.gravity = To_b2Vec2(config.gravity);
         worldDef.maximumLinearSpeed = config.maxLinearSpeed;
         m_worldId = b2CreateWorld(&worldDef);
+        m_isInitialized = true;
         Locator::GetLogger()->Info("Physics engine 2D initialized");
     }
 
     void PhysicsEngine2D::ShutDown()
     {
         b2DestroyWorld(m_worldId);
+        m_isInitialized = false;
         Locator::GetLogger()->Info("Physics engine 2D shut down");
     }
 

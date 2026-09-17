@@ -88,7 +88,9 @@ namespace Engine
         auto* eventBus{Locator::GetEventBus()};
         eventBus->Reset();
         UpdatePlayerInput(eventBus);
-        UpdatePhysics2D(timeStep);
+        if (Locator::GetPhysicsEngine2D()->IsInitialized()) {
+            UpdatePhysics2D(timeStep);
+        }
         UpdateScripts(timeStep);
 
         RemoveScripts();
@@ -384,6 +386,10 @@ namespace Engine
     void Scene::InitPhysics2D()
     {
         const auto view{m_mainRegistry->view<RigidBody2DComponent>()};
+        const auto physicsEngine2D{Locator::GetPhysicsEngine2D()};
+        if (!view.empty() && !physicsEngine2D->IsInitialized()) {
+            physicsEngine2D->Init();
+        }
         for (const auto entity : view) {
             OnAddRigidBody2DComponent(*m_mainRegistry, entity);
             if (m_mainRegistry->all_of<BoxCollider2DComponent>(entity)) {

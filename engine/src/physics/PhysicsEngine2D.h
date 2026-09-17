@@ -16,6 +16,7 @@ namespace Engine
         void ShutDown();
         void Update(float timeStep);
         void DebugDraw();
+        [[nodiscard]] bool IsInitialized() const { return m_isInitialized; }
 
         BodyEvents2D GetBodyEvents();
         CollisionEvents2D GetCollisionEvents();
@@ -52,5 +53,6 @@ namespace Engine
 
         Physics2DDebugDraw m_physics2DDebugDraw{};
         b2WorldId m_worldId{};
+        bool m_isInitialized{false};
     };
 } // namespace Engine

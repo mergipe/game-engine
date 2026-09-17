@@ -57,7 +57,6 @@ namespace Engine
         m_sceneManager->Init();
         Locator::Provide(m_sceneManager.get());
         m_physicsEngine2D = std::make_unique<PhysicsEngine2D>();
-        m_physicsEngine2D->Init();
         Locator::Provide(m_physicsEngine2D.get());
         m_scriptSystem = std::make_unique<ScriptSystem>();
         m_scriptSystem->Init();
