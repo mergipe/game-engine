@@ -26,7 +26,7 @@ function PlayerController:OnUpdate()
     if currentTime - self.lastShotTime > self.shotCooldown then
       local missile = Entity.Create(StringId.new("templates/missile.template"))
       local transform = missile:GetComponent(Transform)
-      transform.position = self.transform.position - self.transform.up * 50
+      transform.position = self.transform.position - self.transform.up * 58
       transform.rotation = Vec3:new(0, 0, self.transform.rotation.z + math.pi)
       local rigidBody = missile:GetComponent(RigidBody2D)
       rigidBody.linearVelocity = -self.transform.up * 500

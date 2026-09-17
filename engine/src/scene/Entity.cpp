@@ -50,7 +50,8 @@ namespace Engine
         const auto scriptClassId{scriptInstance.GetClass().GetId()}; // should be by copy!
         const auto scriptInstanceComponent{ScriptInstanceComponent{std::move(scriptInstance)}};
         auto& storage{m_handle.registry()->storage<ScriptInstanceComponent>(scriptClassId.GetId())};
-        if (storage.push(m_handle.entity(), &scriptInstanceComponent).index() != storage.end().index()) {
+        storage.push(m_handle.entity(), &scriptInstanceComponent);
+        if (storage.contains(m_handle.entity())) {
             GetOrAddComponent<ScriptBaseComponent>().classIds.push_back(scriptClassId);
         }
     }

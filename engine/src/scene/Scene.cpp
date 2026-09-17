@@ -209,12 +209,12 @@ namespace Engine
 
     void Scene::CreateEntities()
     {
-        for (auto& entityToCreate : m_entitiesToCreate) {
+        for (auto entityToCreate : m_entitiesToCreate) {
             const auto newEntity{m_mainRegistry->create()};
             const auto newHandle{entt::handle{*m_mainRegistry, newEntity}};
             auto oldHandle{entityToCreate->GetHandle()};
-            ECSUtils::CopyEntity(oldHandle, newHandle);
             entityToCreate->SetHandle(newHandle);
+            ECSUtils::CopyEntity(oldHandle, newHandle);
             oldHandle.destroy();
         }
         m_entitiesToCreate.clear();
