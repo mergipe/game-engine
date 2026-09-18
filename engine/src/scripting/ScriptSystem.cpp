@@ -212,10 +212,13 @@ namespace Engine
                                                       &ScriptingApi::RigidBody2D::SetLinearVelocity);
         rigidBody2D["angularVelocity"] = sol::property(&ScriptingApi::RigidBody2D::GetAngularVelocity,
                                                        &ScriptingApi::RigidBody2D::SetAngularVelocity);
+        rigidBody2D["gravityScale"] = sol::property(&ScriptingApi::RigidBody2D::GetGravityScale,
+                                                    &ScriptingApi::RigidBody2D::SetGravityScale);
         rigidBody2D["ApplyForce"] = &ScriptingApi::RigidBody2D::ApplyForce;
         rigidBody2D["ApplyTorque"] = &ScriptingApi::RigidBody2D::ApplyTorque;
         auto collider2D{m_lua.new_usertype<ScriptingApi::Collider2D>("Collider2D", sol::base_classes,
                                                                      sol::bases<ScriptingApi::Component>())};
+        collider2D["body"] = sol::property(&ScriptingApi::Collider2D::GetBody);
     }
 
     void ScriptSystem::BindPhysicsTypes()

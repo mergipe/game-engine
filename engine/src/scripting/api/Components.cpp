@@ -31,7 +31,10 @@ namespace Engine::ScriptingApi
 
     glm::vec3 Transform::GetPosition() const { return m_entity->GetComponent<TransformComponent>().position; }
 
-    glm::vec3 Transform::GetRotation() const { return m_entity->GetComponent<TransformComponent>().rotation; }
+    glm::vec3 Transform::GetRotation() const
+    {
+        return Math::ToDegrees(m_entity->GetComponent<TransformComponent>().rotation);
+    }
 
     glm::vec3 Transform::GetScale() const { return m_entity->GetComponent<TransformComponent>().scale; }
 
@@ -57,7 +60,7 @@ namespace Engine::ScriptingApi
 
     void Transform::SetRotation(glm::vec3 rotation) const
     {
-        m_entity->GetComponent<TransformComponent>().rotation = rotation;
+        m_entity->GetComponent<TransformComponent>().rotation = Math::ToRadians(rotation);
     }
 
     void Transform::SetScale(glm::vec3 scale) const
@@ -88,6 +91,15 @@ namespace Engine::ScriptingApi
         return rigidBody.bodyData.angularVelocity;
     }
 
+    float RigidBody2D::GetGravityScale() const
+    {
+        const auto& rigidBody{m_entity->GetComponent<RigidBody2DComponent>()};
+        if (rigidBody.bodyId) {
+            return Locator::GetPhysicsEngine2D()->GetGravityScale(rigidBody.bodyId.value());
+        }
+        return rigidBody.bodyData.gravityScale;
+    }
+
     void RigidBody2D::SetLinearVelocity(glm::vec2 velocity) const
     {
         auto& rigidBody{m_entity->GetComponent<RigidBody2DComponent>()};
@@ -103,6 +115,15 @@ namespace Engine::ScriptingApi
         rigidBody.bodyData.angularVelocity = velocity;
         if (rigidBody.bodyId) {
             Locator::GetPhysicsEngine2D()->SetAngularVelocity(rigidBody.bodyId.value(), velocity);
+        }
+    }
+
+    void RigidBody2D::SetGravityScale(float gravityScale) const
+    {
+        auto& rigidBody{m_entity->GetComponent<RigidBody2DComponent>()};
+        rigidBody.bodyData.gravityScale = gravityScale;
+        if (rigidBody.bodyId) {
+            Locator::GetPhysicsEngine2D()->SetGravityScale(rigidBody.bodyId.value(), gravityScale);
         }
     }
 
@@ -128,4 +149,6 @@ namespace Engine::ScriptingApi
     }
 
     void Collider2D::SetShapeId(Shape2DId shapeId) { m_shapeId = shapeId; }
+
+    RigidBody2D Collider2D::GetBody() const { return RigidBody2D{m_entity}; }
 } // namespace Engine::ScriptingApi

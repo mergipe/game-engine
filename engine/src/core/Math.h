@@ -5,9 +5,23 @@
 
 namespace Engine::Math
 {
+    constexpr float g_radianToDegreeFactor{180.0f / glm::pi<float>()};
+    constexpr float g_degreeToRadianFactor{glm::pi<float>() / 180.0f};
     constexpr glm::vec3 g_canonicalUp{0.0f, 1.0f, 0.0f};
     constexpr glm::vec3 g_canonicalRight{1.0f, 0.0f, 0.0f};
     constexpr glm::vec3 g_canonicalForward{0.0f, 0.0f, 1.0f};
+
+    constexpr float ToDegrees(float radians) { return radians * g_radianToDegreeFactor; }
+
+    constexpr glm::vec2 ToDegrees(glm::vec2 radians) { return radians * g_radianToDegreeFactor; }
+
+    constexpr glm::vec3 ToDegrees(glm::vec3 radians) { return radians * g_radianToDegreeFactor; }
+
+    constexpr float ToRadians(float degrees) { return degrees * g_degreeToRadianFactor; }
+
+    constexpr glm::vec2 ToRadians(glm::vec2 degrees) { return degrees * g_degreeToRadianFactor; }
+
+    constexpr glm::vec3 ToRadians(glm::vec3 degrees) { return degrees * g_degreeToRadianFactor; }
 
     constexpr glm::mat4 BuildRotationMatrix(glm::vec3 rotationAngles)
     {

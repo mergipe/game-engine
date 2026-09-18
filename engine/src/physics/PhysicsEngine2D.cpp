@@ -150,6 +150,8 @@ namespace Engine
         return b2Body_GetAngularVelocity(bodyId);
     }
 
+    float PhysicsEngine2D::GetGravityScale(Body2DId bodyId) const { return b2Body_GetGravityScale(bodyId); }
+
     void PhysicsEngine2D::SetTransform(Body2DId bodyId, glm::vec2 position, float rotation)
     {
         b2Body_SetTransform(bodyId, To_b2Vec2(position), b2MakeRot(rotation));
@@ -163,6 +165,11 @@ namespace Engine
     void PhysicsEngine2D::SetAngularVelocity(Body2DId bodyId, float velocity) const
     {
         b2Body_SetAngularVelocity(bodyId, velocity);
+    }
+
+    void PhysicsEngine2D::SetGravityScale(Body2DId bodyId, float gravityScale) const
+    {
+        b2Body_SetGravityScale(bodyId, gravityScale);
     }
 
     void PhysicsEngine2D::ApplyForce(Body2DId bodyId, glm::vec2 force) const

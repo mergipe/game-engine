@@ -40,10 +40,12 @@ namespace Engine
         [[nodiscard]] float GetRotationAngle(Body2DId bodyId) const;
         [[nodiscard]] glm::vec2 GetLinearVelocity(Body2DId bodyId) const;
         [[nodiscard]] float GetAngularVelocity(Body2DId bodyId) const;
+        [[nodiscard]] float GetGravityScale(Body2DId bodyId) const;
 
         void SetTransform(Body2DId bodyId, glm::vec2 position, float rotation);
         void SetLinearVelocity(Body2DId bodyId, glm::vec2 velocity) const;
         void SetAngularVelocity(Body2DId bodyId, float velocity) const;
+        void SetGravityScale(Body2DId bodyId, float gravityScale) const;
         void ApplyForce(Body2DId bodyId, glm::vec2 force) const;
         void ApplyTorque(Body2DId bodyId, float torque) const;
 

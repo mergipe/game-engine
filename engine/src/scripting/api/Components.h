@@ -59,8 +59,10 @@ namespace Engine::ScriptingApi
         explicit RigidBody2D(Engine::Entity* entity);
         [[nodiscard]] glm::vec2 GetLinearVelocity() const;
         [[nodiscard]] float GetAngularVelocity() const;
+        [[nodiscard]] float GetGravityScale() const;
         void SetLinearVelocity(glm::vec2 velocity) const;
         void SetAngularVelocity(float velocity) const;
+        void SetGravityScale(float gravityScale) const;
         void ApplyForce(glm::vec2 force) const;
         void ApplyTorque(float torque) const;
     };
@@ -70,6 +72,7 @@ namespace Engine::ScriptingApi
     public:
         explicit Collider2D(Engine::Entity* entity);
         void SetShapeId(Shape2DId shapeId);
+        [[nodiscard]] RigidBody2D GetBody() const;
 
     private:
         Shape2DId m_shapeId{};

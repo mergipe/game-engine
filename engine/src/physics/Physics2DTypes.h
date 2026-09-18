@@ -23,8 +23,8 @@ namespace Engine
     }
 
     struct Material2DData {
-        float friction{0.6f};
-        float bounciness{0.0f};
+        float friction{0.3f};
+        float bounciness{0.3f};
         float rollingResistance{0.0f};
         float tangentSpeed{0.0f};
     };
@@ -39,8 +39,8 @@ namespace Engine
     struct Body2DData {
         glm::vec2 linearVelocity{};
         b2BodyType type{b2_staticBody};
-        float gravityScale{0.0f};
-        float angularDamping{0.0f};
+        float gravityScale{1.0f};
+        float angularDamping{0.3f};
         float linearDamping{0.0f};
         float angularVelocity{0.0f};
         bool preciseCollisions{false};
