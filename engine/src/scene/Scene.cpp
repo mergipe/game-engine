@@ -12,6 +12,25 @@
 
 namespace Engine
 {
+    void InvokeOnStart(ScriptInstance& scriptInstance) { scriptInstance.InvokeOnStart(); }
+
+    void InvokeOnUpdate(ScriptInstance& scriptInstance, float timeStep)
+    {
+        scriptInstance.InvokeOnUpdate(timeStep);
+    }
+
+    void InvokeOnLateUpdate(ScriptInstance& scriptInstance, float timeStep)
+    {
+        scriptInstance.InvokeOnLateUpdate(timeStep);
+    }
+
+    void InvokeOnDestroy(Entity& entity, const StringId& scriptClassId)
+    {
+        if (const auto scriptInstance{entity.GetScript(scriptClassId)}) {
+            scriptInstance->InvokeOnDestroy();
+        }
+    }
+
     void OnCollisionEnter(const Entity& entity, Entity& other, const CollisionManifold2D& manifold,
                           Shape2DId otherShapeId)
     {
@@ -225,8 +244,14 @@ namespace Engine
 
     void Scene::DestroyEntities()
     {
-        for (const auto entity : m_entitiesToDestroy) {
+        for (auto& entity : m_entitiesToDestroy) {
             if (entity.IsValid()) {
+                if (entity.HasComponent<ScriptBaseComponent>()) {
+                    const auto& scriptClassIds{entity.GetComponent<ScriptBaseComponent>().classIds};
+                    for (const auto& scriptClassId : scriptClassIds) {
+                        InvokeOnDestroy(entity, scriptClassId);
+                    }
+                }
                 m_entityById.erase(entity.GetId());
                 m_mainRegistry->destroy(entity.GetHandle());
             }
@@ -263,21 +288,10 @@ namespace Engine
     void Scene::RemoveScripts()
     {
         for (const auto& [entity, scriptClassId] : m_scriptsToRemove) {
+            InvokeOnDestroy(*entity, scriptClassId);
             entity->RemoveScript(scriptClassId);
         }
         m_scriptsToRemove.clear();
-    }
-
-    void InvokeOnStart(ScriptInstance& scriptInstance) { scriptInstance.InvokeOnStart(); }
-
-    void InvokeOnUpdate(ScriptInstance& scriptInstance, float timeStep)
-    {
-        scriptInstance.InvokeOnUpdate(timeStep);
-    }
-
-    void InvokeOnLateUpdate(ScriptInstance& scriptInstance, float timeStep)
-    {
-        scriptInstance.InvokeOnLateUpdate(timeStep);
     }
 
     void Scene::InvokeOnAllScripts(const std::function<void(ScriptInstance&)>& function)

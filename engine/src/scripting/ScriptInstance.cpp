@@ -87,6 +87,8 @@ namespace Engine
         InvokeFunction("OnTriggerExit", collider);
     }
 
+    void ScriptInstance::InvokeOnDestroy() { InvokeFunction("OnDestroy"); }
+
     void ScriptInstance::OnInvokeFunctionError(std::string_view functionName,
                                                const sol::protected_function_result& result)
     {

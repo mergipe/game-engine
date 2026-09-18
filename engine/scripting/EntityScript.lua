@@ -20,3 +20,5 @@ function EntityScript:OnCollisionExit(otherCollider) end
 function EntityScript:OnTriggerEnter(otherCollider) end
 
 function EntityScript:OnTriggerExit(otherCollider) end
+
+function EntityScript:OnDestroy() end

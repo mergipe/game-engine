@@ -15,6 +15,7 @@ namespace Engine
     {
     public:
         explicit Entity(entt::handle handle, Scene* scene);
+        explicit Entity(entt::registry& registry, entt::entity entity, Scene* scene);
         void SetHandle(entt::handle handle);
         [[nodiscard]] entt::handle GetHandle() const;
         [[nodiscard]] bool IsValid() const;

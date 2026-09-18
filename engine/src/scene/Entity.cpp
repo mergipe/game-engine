@@ -9,6 +9,11 @@ namespace Engine
     {
     }
 
+    Entity::Entity(entt::registry& registry, entt::entity entity, Scene* scene)
+        : Entity{entt::handle{registry, entity}, scene}
+    {
+    }
+
     void Entity::SetHandle(entt::handle handle) { m_handle = handle; }
 
     entt::handle Entity::GetHandle() const { return m_handle; }

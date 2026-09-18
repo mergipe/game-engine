@@ -31,6 +31,7 @@ namespace Engine
         void InvokeOnCollisionExit(Entity& otherEntity, Shape2DId otherShapeId);
         void InvokeOnTriggerEnter(Entity& otherEntity, Shape2DId otherShapeId);
         void InvokeOnTriggerExit(Entity& otherEntity, Shape2DId otherShapeId);
+        void InvokeOnDestroy();
 
     private:
         void OnInvokeFunctionError(std::string_view functionName,
