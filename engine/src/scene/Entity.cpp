@@ -37,13 +37,13 @@ namespace Engine
     bool Entity::HasScript(const StringId& scriptClassId) const
     {
         return m_handle.registry()
-            ->storage<ScriptInstanceComponent>(scriptClassId.GetId())
+            ->storage<ScriptInstanceComponent>(scriptClassId.GetHash())
             .contains(m_handle.entity());
     }
 
     ScriptInstance* Entity::GetScript(const StringId& scriptClassId) const
     {
-        auto& storage{m_handle.registry()->storage<ScriptInstanceComponent>(scriptClassId.GetId())};
+        auto& storage{m_handle.registry()->storage<ScriptInstanceComponent>(scriptClassId.GetHash())};
         if (storage.contains(m_handle.entity())) {
             return &storage.get(m_handle.entity()).instance;
         }
@@ -54,7 +54,7 @@ namespace Engine
     {
         const auto scriptClassId{scriptInstance.GetClass().GetId()}; // should be by copy!
         const auto scriptInstanceComponent{ScriptInstanceComponent{std::move(scriptInstance)}};
-        auto& storage{m_handle.registry()->storage<ScriptInstanceComponent>(scriptClassId.GetId())};
+        auto& storage{m_handle.registry()->storage<ScriptInstanceComponent>(scriptClassId.GetHash())};
         storage.push(m_handle.entity(), &scriptInstanceComponent);
         if (storage.contains(m_handle.entity())) {
             GetOrAddComponent<ScriptBaseComponent>().classIds.push_back(scriptClassId);
@@ -65,11 +65,11 @@ namespace Engine
 
     void Entity::RemoveScript(const StringId& scriptClassId)
     {
-        auto& storage{m_handle.registry()->storage<ScriptInstanceComponent>(scriptClassId.GetId())};
+        auto& storage{m_handle.registry()->storage<ScriptInstanceComponent>(scriptClassId.GetHash())};
         if (storage.remove(m_handle.entity())) {
             auto& scriptBaseComponent{GetComponent<ScriptBaseComponent>()};
             std::erase_if(scriptBaseComponent.classIds, [scriptClassId](const StringId& sid) {
-                return sid.GetId() == scriptClassId.GetId();
+                return sid.GetHash() == scriptClassId.GetHash();
             });
         }
     }

@@ -167,7 +167,7 @@ namespace Engine
         BindVectorFunctions(vec4);
         auto stringId{
             m_lua.new_usertype<StringId>("StringId", sol::constructors<StringId(), StringId(const char*)>())};
-        stringId["id"] = sol::property(&StringId::GetId);
+        stringId["hash"] = sol::property(&StringId::GetHash);
         stringId["str"] = sol::property(sol::resolve<std::string_view() const>(&StringId::GetString));
         auto debug{m_lua.new_usertype<ScriptingApi::Debug>("Debug")};
         debug["Log"] = &ScriptingApi::Debug::Log;

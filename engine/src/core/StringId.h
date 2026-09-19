@@ -10,7 +10,7 @@
 
 namespace Engine
 {
-    using StringIdType = U32;
+    using StringIdHashType = U32;
 
     constexpr U32 operator""_sid(const char* str, std::size_t) { return Hash::Hash32(str); }
 
@@ -21,26 +21,26 @@ namespace Engine
     {
     public:
         static StringId Intern(std::string_view str);
-        static std::string_view GetString(StringIdType id);
+        static std::string_view GetString(StringIdHashType hash);
 
         StringId() = default;
         constexpr explicit StringId(const char* str);
 
-        bool operator==(const StringId& other) const { return m_id == other.m_id; }
+        bool operator==(const StringId& other) const { return m_hash == other.m_hash; }
         [[nodiscard]] std::string_view GetString() const { return m_str; }
-        [[nodiscard]] StringIdType GetId() const { return m_id; }
+        [[nodiscard]] StringIdHashType GetHash() const { return m_hash; }
 
     private:
-        static inline std::unordered_map<StringIdType, std::string> s_stringIdTable{};
+        static inline std::unordered_map<StringIdHashType, std::string> s_stringIdTable{};
 
-        explicit StringId(std::string_view str, StringIdType id);
+        explicit StringId(std::string_view str, StringIdHashType hash);
 
         std::string_view m_str{};
-        StringIdType m_id{};
+        StringIdHashType m_hash{};
     };
 
     constexpr StringId::StringId(const char* str)
-        : m_str{str}, m_id{Hash::Hash32(str)}
+        : m_str{str}, m_hash{Hash::Hash32(str)}
     {
     }
 
@@ -50,5 +50,5 @@ namespace Engine
 
 template <>
 struct std::hash<Engine::StringId> {
-    std::size_t operator()(const Engine::StringId& sid) const noexcept { return sid.GetId(); }
+    std::size_t operator()(const Engine::StringId& sid) const noexcept { return sid.GetHash(); }
 };

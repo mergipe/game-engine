@@ -9,24 +9,24 @@ namespace Engine
 {
     StringId StringId::Intern(std::string_view str)
     {
-        const StringIdType id{Hash::Hash32(str.data())};
-        if (!s_stringIdTable.contains(id)) {
-            s_stringIdTable[id] = std::string{str};
-            Locator::GetLogger()->Debug("[StringId] Interned '{}' as '{}'", str, id);
+        const StringIdHashType hash{Hash::Hash32(str.data())};
+        if (!s_stringIdTable.contains(hash)) {
+            s_stringIdTable[hash] = std::string{str};
+            Locator::GetLogger()->Trace("[StringId] Interned '{}' as '{}'", str, hash);
         }
-        return StringId{s_stringIdTable[id], id};
+        return StringId{s_stringIdTable[hash], hash};
     }
 
-    std::string_view StringId::GetString(StringIdType id)
+    std::string_view StringId::GetString(StringIdHashType hash)
     {
-        if (s_stringIdTable.contains(id)) {
-            return s_stringIdTable[id];
+        if (s_stringIdTable.contains(hash)) {
+            return s_stringIdTable[hash];
         }
         return {};
     }
 
-    StringId::StringId(std::string_view str, StringIdType id)
-        : m_str{str}, m_id{id}
+    StringId::StringId(std::string_view str, StringIdHashType hash)
+        : m_str{str}, m_hash{hash}
     {
     }
 } // namespace Engine

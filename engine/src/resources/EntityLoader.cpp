@@ -182,7 +182,7 @@ namespace Engine
                     } else {
                         attributeValue.type = Variant::Type::tStringId;
                         attributeValue.asStringId =
-                            StringId::Intern(attributeValueNode.as<std::string>()).GetId();
+                            StringId::Intern(attributeValueNode.as<std::string>()).GetHash();
                     }
                     scriptClassData->attributes[attributeNode.first.as<std::string>()] = attributeValue;
                 }

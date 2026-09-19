@@ -297,7 +297,7 @@ namespace Engine
     void Scene::InvokeOnAllScripts(const std::function<void(ScriptInstance&)>& function)
     {
         for (const auto& scriptClassId : Locator::GetScriptSystem()->GetScriptClasses() | std::views::keys) {
-            auto& storage{m_mainRegistry->storage<ScriptInstanceComponent>(scriptClassId.GetId())};
+            auto& storage{m_mainRegistry->storage<ScriptInstanceComponent>(scriptClassId.GetHash())};
             entt::runtime_view scriptInstanceView{};
             scriptInstanceView.iterate(storage);
             for (const auto entity : scriptInstanceView) {

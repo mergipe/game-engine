@@ -11,7 +11,7 @@ namespace Engine
             int asInteger;
             float asFloat;
             bool asBool;
-            StringIdType asStringId;
+            StringIdHashType asStringId;
         };
     };
 } // namespace Engine

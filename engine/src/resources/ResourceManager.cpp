@@ -137,7 +137,7 @@ namespace Engine
         texture->Create(data, width, height, imageFormat);
         stbi_image_free(data);
         m_textures.insert(std::make_pair(id, std::move(texture)));
-        Locator::GetLogger()->Info("Texture {} loaded with id {}", filePath.c_str(), id.GetId());
+        Locator::GetLogger()->Info("Texture {} loaded with id {}", filePath.c_str(), id.GetHash());
     }
 
     void ResourceManager::LoadFont([[maybe_unused]] const StringId& id,
