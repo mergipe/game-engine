@@ -3,9 +3,11 @@
 #include "Components.h"
 #include "ECSUtils.h"
 #include "core/Locator.h"
+#include "core/Logger.h"
 #include "core/StringId.h"
 #include "core/Yaml.h"
 #include "resources/EntityLoader.h"
+#include "resources/ResourceManager.h"
 
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>

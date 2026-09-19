@@ -1,7 +1,9 @@
 #include "Physics2DDebugDraw.h"
 
 #include "core/Locator.h"
+#include "renderer/DebugRenderer.h"
 
+#include <glm/glm.hpp>
 #include <imgui.h>
 
 namespace Engine

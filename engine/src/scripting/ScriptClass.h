@@ -3,20 +3,19 @@
 #include "core/StringId.h"
 #include "core/Variant.h"
 
-#include <filesystem>
 #include <sol/sol.hpp>
 #include <string>
 #include <string_view>
 
 namespace Engine
 {
-    class Entity;
-    class ScriptInstance;
-
     struct ScriptClassData final {
         StringId classId{};
         std::unordered_map<std::string, Variant> attributes{};
     };
+
+    class Entity;
+    class ScriptInstance;
 
     class ScriptClass
     {

@@ -2,6 +2,7 @@
 
 #include "core/FileSystem.h"
 #include "core/Locator.h"
+#include "core/Logger.h"
 
 namespace Engine
 {

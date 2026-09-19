@@ -3,6 +3,7 @@
 #include "EntityLoader.h"
 #include "core/FileSystem.h"
 #include "core/Locator.h"
+#include "core/Logger.h"
 
 #include <array>
 #include <stb_image/stb_image.h>

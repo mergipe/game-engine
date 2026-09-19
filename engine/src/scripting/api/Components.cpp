@@ -2,6 +2,7 @@
 
 #include "core/Locator.h"
 #include "core/Math.h"
+#include "physics/PhysicsEngine2D.h"
 #include "scene/Components.h"
 
 namespace Engine::ScriptingApi

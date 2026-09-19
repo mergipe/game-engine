@@ -2,7 +2,6 @@
 
 #include "api/Components.h"
 #include "api/Physics.h"
-#include "core/Locator.h"
 
 namespace Engine
 {
@@ -88,11 +87,4 @@ namespace Engine
     }
 
     void ScriptInstance::InvokeOnDestroy() { InvokeFunction("OnDestroy"); }
-
-    void ScriptInstance::OnInvokeFunctionError(std::string_view functionName,
-                                               const sol::protected_function_result& result)
-    {
-        Locator::GetLogger()->Error("Error calling {}:{} on entity {}: {}", m_scriptClass->GetName(),
-                                    functionName, m_entity.GetId().GetString(), sol::error{result}.what());
-    }
 } // namespace Engine

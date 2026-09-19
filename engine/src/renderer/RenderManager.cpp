@@ -2,6 +2,7 @@
 
 #include "ShaderManager.h"
 #include "core/Locator.h"
+#include "core/Logger.h"
 #include "core/Math.h"
 
 #include <SDL3/SDL.h>

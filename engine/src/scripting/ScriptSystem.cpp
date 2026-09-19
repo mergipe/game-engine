@@ -4,8 +4,10 @@
 #include "api/Core.h"
 #include "api/Physics.h"
 #include "core/Locator.h"
+#include "core/Logger.h"
 #include "resources/ResourceManager.h"
 #include "scene/Components.h"
+#include "scene/SceneManager.h"
 
 #include <ranges>
 

@@ -1,6 +1,8 @@
 #include "EntityLoader.h"
 
 #include "core/Locator.h"
+#include "core/Logger.h"
+#include "resources/ResourceManager.h"
 #include "scene/Components.h"
 #include "scene/ECSUtils.h"
 

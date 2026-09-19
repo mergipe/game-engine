@@ -1,6 +1,7 @@
 #include "FileSystem.h"
 
 #include "Locator.h"
+#include "Logger.h"
 
 #include <fstream>
 #include <sstream>

@@ -2,6 +2,7 @@
 
 #include "core/ConfigManager.h"
 #include "core/Locator.h"
+#include "core/Logger.h"
 
 #include <glm/glm.hpp>
 

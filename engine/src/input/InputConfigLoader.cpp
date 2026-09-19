@@ -4,6 +4,7 @@
 #include "InputCommand.h"
 #include "core/ConfigManager.h"
 #include "core/Locator.h"
+#include "core/Logger.h"
 #include "core/Yaml.h"
 
 #include <SDL3/SDL.h>

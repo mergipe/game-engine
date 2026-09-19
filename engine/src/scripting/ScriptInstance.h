@@ -2,6 +2,8 @@
 
 #include "ScriptClass.h"
 #include "api/Components.h"
+#include "core/Locator.h"
+#include "core/Logger.h"
 #include "core/Variant.h"
 
 #include <sol/sol.hpp>
@@ -34,9 +36,6 @@ namespace Engine
         void InvokeOnDestroy();
 
     private:
-        void OnInvokeFunctionError(std::string_view functionName,
-                                   const sol::protected_function_result& result);
-
         ScriptHandle m_handle{};
         ScriptClass* m_scriptClass{};
         ScriptingApi::Entity m_entity;
@@ -52,7 +51,9 @@ namespace Engine
         sol::protected_function function{m_handle[functionName]};
         const auto result{function(m_handle, std::forward<TArgs>(args)...)};
         if (!result.valid()) {
-            OnInvokeFunctionError(functionName, result);
+            Locator::GetLogger()->Error("Error calling {}:{} on entity {}: {}", m_scriptClass->GetName(),
+                                        functionName, m_entity.GetId().GetString(),
+                                        sol::error{result}.what());
         }
     }
 } // namespace Engine

@@ -2,6 +2,7 @@
 
 #include "Hash.h"
 #include "Locator.h"
+#include "Logger.h"
 
 #include <unordered_map>
 

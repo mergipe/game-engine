@@ -1,6 +1,7 @@
 #include "Shader.h"
 
 #include "core/Locator.h"
+#include "core/Logger.h"
 
 #include <glm/gtc/type_ptr.hpp>
 

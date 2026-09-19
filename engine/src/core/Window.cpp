@@ -1,6 +1,7 @@
 #include "Window.h"
 
 #include "Locator.h"
+#include "Logger.h"
 
 #include <cstdlib>
 

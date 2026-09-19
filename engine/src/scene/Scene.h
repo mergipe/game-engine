@@ -1,9 +1,14 @@
 #pragma once
 
+#include "core/StringId.h"
 #include "events/EventBus.h"
 #include "events/Events.h"
-#include "scripting/ScriptClass.h"
 #include "scripting/ScriptInstance.h"
+
+#include <entt/entity/handle.hpp>
+#include <entt/entity/registry.hpp>
+#include <unordered_map>
+#include <vector>
 
 namespace Engine
 {
@@ -78,10 +83,10 @@ namespace Engine
 
         entt::registry m_stagingRegistry{};
 
-        std::unordered_map<StringId, Entity> m_entityById{};
+        std::unordered_map<StringId, Entity> m_entityById; // default init because Entity is incomplete
 
         std::vector<Entity*> m_entitiesToCreate{};
-        std::vector<Entity> m_entitiesToDestroy{};
+        std::vector<Entity> m_entitiesToDestroy; // default init because Entity is incomplete
         std::vector<EntityComponent> m_componentsToAdd{};
         std::vector<EntityComponent> m_componentsToRemove{};
         std::vector<EntityScript> m_scriptsToAdd{};

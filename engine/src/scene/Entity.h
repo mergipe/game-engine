@@ -8,7 +8,6 @@
 
 namespace Engine
 {
-    class ScriptClass;
     class ScriptInstance;
 
     class Entity

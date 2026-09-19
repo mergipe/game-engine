@@ -1,17 +1,17 @@
 #pragma once
 
-#include "core/Logger.h"
-#include "events/EventBus.h"
-#include "input/InputManager.h"
-#include "physics/PhysicsEngine2D.h"
-#include "renderer/DebugRenderer.h"
-#include "renderer/RenderManager.h"
-#include "resources/ResourceManager.h"
-#include "scene/SceneManager.h"
-#include "scripting/ScriptSystem.h"
-
 namespace Engine
 {
+    class Logger;
+    class EventBus;
+    class ResourceManager;
+    class RenderManager;
+    class DebugRenderer;
+    class InputManager;
+    class PhysicsEngine2D;
+    class ScriptSystem;
+    class SceneManager;
+
     class Locator
     {
     public:
