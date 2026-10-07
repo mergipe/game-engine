@@ -9,7 +9,7 @@ namespace Engine
         if (!FileSystem::IsFile(s_videoConfigPath)) {
             return;
         }
-        const YAML::Node rootNode{YAML::LoadFile(s_videoConfigPath)};
+        const YAML::Node rootNode{YAML::LoadFile(s_videoConfigPath.string())};
         if (rootNode["vsync"]) {
             s_videoConfig.vsync = rootNode["vsync"].as<bool>();
         }
@@ -43,7 +43,7 @@ namespace Engine
         if (!FileSystem::IsFile(s_physics2DConfigPath)) {
             return;
         }
-        const YAML::Node rootNode{YAML::LoadFile(s_physics2DConfigPath)};
+        const YAML::Node rootNode{YAML::LoadFile(s_physics2DConfigPath.string())};
         if (const YAML::Node gravityNode{rootNode["gravity"]}) {
             if (gravityNode["x"]) {
                 s_physics2DConfig.gravity.x = gravityNode["x"].as<float>();
@@ -62,7 +62,7 @@ namespace Engine
         if (!FileSystem::IsFile(s_gameConfigPath)) {
             return;
         }
-        const YAML::Node rootNode{YAML::LoadFile(s_gameConfigPath)};
+        const YAML::Node rootNode{YAML::LoadFile(s_gameConfigPath.string())};
         if (rootNode["initial_scene"]) {
             s_gameConfig.initialScene = StringId::Intern(rootNode["initial_scene"].as<std::string>());
         }

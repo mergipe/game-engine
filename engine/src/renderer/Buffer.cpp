@@ -4,6 +4,8 @@
 
 namespace Engine
 {
+#define BUFFER_OFFSET(i) reinterpret_cast<void*>(static_cast<intptr_t>(i))
+
     int GetTypeSize(U32 type)
     {
         switch (type) {
@@ -148,13 +150,12 @@ namespace Engine
                      attribute.type == GL_SHORT || attribute.type == GL_UNSIGNED_SHORT ||
                      attribute.type == GL_INT || attribute.type == GL_UNSIGNED_INT)) {
                     glVertexAttribIPointer(attribute.index, attribute.size, attribute.type,
-                                           buffer.GetStride(), reinterpret_cast<void*>(offset));
+                                           buffer.GetStride(), BUFFER_OFFSET(offset));
                 } else {
                     glVertexAttribPointer(attribute.index, attribute.size, attribute.type,
-                                          attribute.normalized, buffer.GetStride(),
-                                          reinterpret_cast<const void*>(offset));
+                                          attribute.normalized, buffer.GetStride(), BUFFER_OFFSET(offset));
                 }
-                glVertexAttribDivisor(attribute.index, static_cast<int>(buffer.IsInstanced()));
+                glVertexAttribDivisor(attribute.index, static_cast<GLuint>(buffer.IsInstanced()));
                 offset += attribute.size * GetTypeSize(attribute.type);
             }
             buffer.Unbind();

@@ -36,7 +36,7 @@ namespace Engine
     {
         std::ifstream fileStream{filePath};
         if (!fileStream.is_open()) {
-            Locator::GetLogger()->Error("File {} not found", filePath.c_str());
+            Locator::GetLogger()->Error("File {} not found", filePath.string());
             return {};
         }
         std::stringstream buffer{};

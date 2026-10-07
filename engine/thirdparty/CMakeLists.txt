@@ -4,15 +4,34 @@ include(ExternalProject)
 set(LUAJIT_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/luajit_build)
 set(LUAJIT_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/luajit_install)
 set(LUAJIT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/luajit)
-set(LUAJIT_LIB_PATH ${LUAJIT_INSTALL_DIR}/lib/libluajit-5.1.a)
+set(LUAJIT_LIB_DIR ${LUAJIT_INSTALL_DIR}/lib)
 set(LUAJIT_INC_DIR "${LUAJIT_INSTALL_DIR}/include/luajit-2.1")
 file(MAKE_DIRECTORY "${LUAJIT_INC_DIR}")
+if (WIN32)
+    set(LUAJIT_LIB_PATH ${LUAJIT_LIB_DIR}/lua51.lib)
+    set(LUAJIT_BUILD_COMMAND cd src && msvcbuild static)
+    set(LUAJIT_HEADERS
+            lauxlib.h luaconf.h lua.h lua.hpp luajit.h lualib.h
+    )
+    set(LUAJIT_HEADER_PATHS "")
+    foreach (header ${LUAJIT_HEADERS})
+        list(APPEND LUAJIT_HEADER_PATHS ${LUAJIT_BUILD_DIR}/src/${header})
+    endforeach ()
+    set(LUAJIT_INSTALL_COMMAND
+            ${CMAKE_COMMAND} -E copy ${LUAJIT_HEADER_PATHS} ${LUAJIT_INC_DIR}
+            COMMAND ${CMAKE_COMMAND} -E copy ${LUAJIT_BUILD_DIR}/src/lua51.lib ${LUAJIT_LIB_PATH}
+    )
+else ()
+    set(LUAJIT_LIB_PATH ${LUAJIT_LIB_DIR}/libluajit-5.1.a)
+    set(LUAJIT_BUILD_COMMAND make)
+    set(LUAJIT_INSTALL_COMMAND make install PREFIX=${LUAJIT_INSTALL_DIR})
+endif ()
 ExternalProject_Add(luajit_build
         SOURCE_DIR ${LUAJIT_SOURCE_DIR}
         BINARY_DIR ${LUAJIT_BUILD_DIR}
         CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${LUAJIT_SOURCE_DIR} ${LUAJIT_BUILD_DIR}
-        BUILD_COMMAND make
-        INSTALL_COMMAND make install PREFIX=${LUAJIT_INSTALL_DIR}
+        BUILD_COMMAND ${LUAJIT_BUILD_COMMAND}
+        INSTALL_COMMAND ${LUAJIT_INSTALL_COMMAND}
         BUILD_IN_SOURCE 0
         BUILD_BYPRODUCTS ${LUAJIT_LIB_PATH}
 )

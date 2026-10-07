@@ -21,7 +21,7 @@ namespace Engine
         if (!constructor) {
             return {};
         }
-        const sol::optional<sol::table> scriptInstanceTable{constructor.value()(m_luaTable)};
+        const sol::optional scriptInstanceTable{constructor.value()(m_luaTable)};
         if (!scriptInstanceTable) {
             return {};
         }

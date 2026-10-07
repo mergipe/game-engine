@@ -8,7 +8,7 @@
 
 namespace Engine
 {
-    StringId StringId::Intern(std::string_view str)
+    StringId StringId::Intern(const std::string& str)
     {
         const StringIdHashType hash{Hash::Hash32(str.data())};
         if (!s_stringIdTable.contains(hash)) {
@@ -17,6 +17,8 @@ namespace Engine
         }
         return StringId{s_stringIdTable[hash], hash};
     }
+
+    StringId StringId::Intern(const std::filesystem::path& path) { return Intern(path.generic_string()); }
 
     std::string_view StringId::GetString(StringIdHashType hash)
     {

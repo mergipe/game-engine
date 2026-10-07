@@ -3,6 +3,7 @@
 #include "Hash.h"
 #include "Types.h"
 
+#include <filesystem>
 #include <iostream>
 #include <string>
 #include <string_view>
@@ -20,7 +21,8 @@ namespace Engine
     class StringId
     {
     public:
-        static StringId Intern(std::string_view str);
+        static StringId Intern(const std::string& str);
+        static StringId Intern(const std::filesystem::path& path);
         static std::string_view GetString(StringIdHashType hash);
 
         StringId() = default;

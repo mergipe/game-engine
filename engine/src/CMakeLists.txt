@@ -4,6 +4,7 @@ add_executable(${PROJECT_NAME}
         core/ConfigManager.cpp
         core/FileSystem.cpp
         core/Logger.cpp
+        core/OS.cpp
         core/StringId.cpp
         core/Timer.cpp
         core/Types.cpp
@@ -63,7 +64,15 @@ if (ENABLE_DEVELOPER_MODE)
             /W4
             /WX
             /w44365
-            /external:W3
+            /external:W0
+            /bigobj
             >
+    )
+endif ()
+
+if (WIN32)
+    add_custom_command(
+            TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:SDL3::SDL3-shared> $<TARGET_FILE_DIR:${PROJECT_NAME}>
     )
 endif ()

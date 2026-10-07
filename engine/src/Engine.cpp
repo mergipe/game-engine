@@ -29,7 +29,7 @@ namespace Engine
         m_logger = std::make_unique<Logger>();
         m_logger->Init();
         Locator::Provide(m_logger.get());
-        m_logger->Info("Initializing engine on {}", FileSystem::GetProjectPath().c_str());
+        m_logger->Info("Initializing engine on {}", FileSystem::GetProjectPath().string());
         InitSDL();
         ConfigManager::Init();
         const VideoConfig& videoConfig{ConfigManager::GetVideoConfig()};

@@ -77,11 +77,11 @@ namespace Engine
             std::abort();
         }
         InputConfig inputConfig{};
-        const YAML::Node engineInputRootNode{YAML::LoadFile(s_engineInputConfigFilePath)};
+        const YAML::Node engineInputRootNode{YAML::LoadFile(s_engineInputConfigFilePath.string())};
         inputConfig.engineInputMapping =
             InputCommandMapping{ParseInputCommands(engineInputRootNode["commands"], true)};
         if (FileSystem::IsFile(gameInputConfigFilePath)) {
-            const YAML::Node gameInputRootNode{YAML::LoadFile(gameInputConfigFilePath)};
+            const YAML::Node gameInputRootNode{YAML::LoadFile(gameInputConfigFilePath.string())};
             inputConfig.inputScopes = ParseInputScopes(gameInputRootNode["scopes"]);
         }
         return inputConfig;

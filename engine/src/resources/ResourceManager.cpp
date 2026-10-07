@@ -55,28 +55,28 @@ namespace Engine
     {
         const std::filesystem::path absoluteFilePath{s_resourcesPath / relativeFilePath};
         if (!FileSystem::IsFile(absoluteFilePath)) {
-            Locator::GetLogger()->Error("Resource {} not found", absoluteFilePath.c_str());
+            Locator::GetLogger()->Error("Resource {} not found", absoluteFilePath.string());
             return;
         }
         const std::filesystem::path metadataFilePath{absoluteFilePath.string() + s_metadataFileExtension};
         if (!FileSystem::IsFile(metadataFilePath)) {
-            Locator::GetLogger()->Error("Resource metadata {} not found", metadataFilePath.c_str());
+            Locator::GetLogger()->Error("Resource metadata {} not found", metadataFilePath.string());
             return;
         }
-        const YAML::Node metadataNode{YAML::LoadFile(metadataFilePath)};
+        const YAML::Node metadataNode{YAML::LoadFile(metadataFilePath.string())};
         if (!metadataNode["resource_type"]) {
             Locator::GetLogger()->Error("Missing resource_type field on metadata file {}",
-                                        metadataFilePath.c_str());
+                                        metadataFilePath.string());
             return;
         }
         const StringId resourceTypeSid{StringId::Intern(metadataNode["resource_type"].as<std::string>())};
         const auto resourceType{ParseResourceType(resourceTypeSid)};
         if (!resourceType) {
             Locator::GetLogger()->Error("Unknown resource_type: {} on metadata file {}",
-                                        resourceTypeSid.GetString(), metadataFilePath.c_str());
+                                        resourceTypeSid.GetString(), metadataFilePath.string());
             return;
         }
-        const StringId resourceId{StringId::Intern(relativeFilePath.c_str())};
+        const StringId resourceId{StringId::Intern(relativeFilePath)};
         switch (*resourceType) {
         case ResourceType::texture:
             LoadTexture(resourceId, absoluteFilePath, metadataNode);
@@ -112,9 +112,9 @@ namespace Engine
         int width{};
         int height{};
         int channels{};
-        bool ok{static_cast<bool>(stbi_info(filePath.c_str(), &width, &height, &channels))};
+        bool ok{static_cast<bool>(stbi_info(filePath.string().data(), &width, &height, &channels))};
         if (!ok) {
-            Locator::GetLogger()->Error("Failed to get info from texture file {}: {}", filePath.c_str(),
+            Locator::GetLogger()->Error("Failed to get info from texture file {}: {}", filePath.string(),
                                         stbi_failure_reason());
             return;
         }
@@ -127,9 +127,9 @@ namespace Engine
             desiredChannels = STBI_rgb_alpha;
             imageFormat = GL_RGBA;
         }
-        unsigned char* data{stbi_load(filePath.c_str(), &width, &height, &channels, desiredChannels)};
+        unsigned char* data{stbi_load(filePath.string().data(), &width, &height, &channels, desiredChannels)};
         if (!data) {
-            Locator::GetLogger()->Error("Failed to open texture file {}: {}", filePath.c_str(),
+            Locator::GetLogger()->Error("Failed to open texture file {}: {}", filePath.string(),
                                         stbi_failure_reason());
             return;
         }
@@ -138,7 +138,7 @@ namespace Engine
         texture->Create(data, width, height, imageFormat);
         stbi_image_free(data);
         m_textures.insert(std::make_pair(id, std::move(texture)));
-        Locator::GetLogger()->Info("Texture {} loaded with id {}", filePath.c_str(), id.GetHash());
+        Locator::GetLogger()->Info("Texture {} loaded with id {}", filePath.string(), id.GetHash());
     }
 
     void ResourceManager::LoadFont([[maybe_unused]] const StringId& id,
@@ -149,7 +149,7 @@ namespace Engine
 
     void ResourceManager::LoadEntityTemplate(const StringId& id, const std::filesystem::path& filePath)
     {
-        const auto entityNode{YAML::LoadFile(filePath)};
+        const auto entityNode{YAML::LoadFile(filePath.string())};
         auto entity{EntityLoader::Load(m_templateRegistry, entityNode)};
         if (m_templateRegistry.valid(entity)) {
             m_entityTemplates.emplace(id, entt::handle{m_templateRegistry, entity});

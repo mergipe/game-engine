@@ -28,8 +28,8 @@ namespace Engine
     {
         m_lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::math);
         AppendPackagePath((s_scriptingLibPath / "?.lua").string());
-        m_lua.require_file("utils", s_scriptingLibPath / "Utils.lua");
-        m_lua.script_file(s_scriptingLibPath / "EntityScript.lua");
+        m_lua.require_file("utils", (s_scriptingLibPath / "Utils.lua").string());
+        m_lua.script_file((s_scriptingLibPath / "EntityScript.lua").string());
         SetBindings();
         LoadProjectScripts();
         Locator::GetLogger()->Info("Script system initialized");
@@ -98,7 +98,7 @@ namespace Engine
 
     void ScriptSystem::AppendPackagePath(const std::string& packagePath)
     {
-        const std::string currentPackagePath{m_lua["package"]["path"]};
+        const std::string currentPackagePath{m_lua["package"]["path"].get_or<std::string>("")};
         m_lua["package"]["path"] = currentPackagePath + (currentPackagePath.empty() ? "" : ";") + packagePath;
     }
 
@@ -109,28 +109,29 @@ namespace Engine
 
     void ScriptSystem::LoadScriptClass(const std::filesystem::path& absoluteFilePath)
     {
-        const auto scriptResult{m_lua.script_file(absoluteFilePath, sol::script_pass_on_error)};
+        const auto scriptResult{m_lua.script_file(absoluteFilePath.string(), sol::script_pass_on_error)};
         if (!scriptResult.valid()) {
+            const sol::error error{scriptResult.get<sol::error>()};
             Locator::GetLogger()->Error("Error loading script class {}: {} error\n\t{}",
-                                        absoluteFilePath.c_str(), sol::to_string(scriptResult.status()),
-                                        sol::error{scriptResult}.what());
+                                        absoluteFilePath.string(), sol::to_string(scriptResult.status()),
+                                        error.what());
             return;
         }
-        std::string className{absoluteFilePath.stem()};
-        const sol::optional<sol::table> maybeScriptClassTable{m_lua[className]};
+        const std::string className{absoluteFilePath.stem().string()};
+        const sol::optional maybeScriptClassTable{m_lua[className]};
         const auto relativeFilePath{Locator::GetResourceManager()->GetResourceRelativePath(absoluteFilePath)};
         if (!maybeScriptClassTable) {
-            Locator::GetLogger()->Warn("Script file '{}' doesn't have '{}' class", relativeFilePath.c_str(),
+            Locator::GetLogger()->Warn("Script file '{}' doesn't have '{}' class", relativeFilePath.string(),
                                        className);
             return;
         }
-        sol::table scriptClassTable{maybeScriptClassTable.value()};
-        const sol::table entityScriptClassTable{m_lua["EntityScript"]};
+        const auto scriptClassTable{maybeScriptClassTable.value().get_or<sol::table>(sol::nil)};
+        const auto entityScriptClassTable{m_lua["EntityScript"].get_or<sol::table>(sol::nil)};
         if (!LuaInstanceOf(scriptClassTable, entityScriptClassTable)) {
             Locator::GetLogger()->Warn("'{}' is not an EntityScript", className);
             return;
         }
-        const auto scriptClassId{StringId::Intern(relativeFilePath.c_str())};
+        const auto scriptClassId{StringId::Intern(relativeFilePath)};
         auto scriptClass{std::make_unique<ScriptClass>(scriptClassId, className, scriptClassTable)};
         SetScriptComponentOperations(*scriptClass);
         m_scriptClasses.emplace(scriptClassId, std::move(scriptClass));
@@ -244,10 +245,10 @@ namespace Engine
     void ScriptSystem::SetNativeComponentsOperations()
     {
         m_componentOperations.emplace(
-            sol::table{m_lua["Transform"]}.pointer(),
+            m_lua["Transform"].get<sol::table>().pointer(),
             CreateComponentOperations<TransformComponent, ScriptingApi::Transform>());
         m_componentOperations.emplace(
-            sol::table{m_lua["RigidBody2D"]}.pointer(),
+            m_lua["RigidBody2D"].get<sol::table>().pointer(),
             CreateComponentOperations<RigidBody2DComponent, ScriptingApi::RigidBody2D>());
     }
 

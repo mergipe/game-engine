@@ -3,6 +3,7 @@
 #include "core/Locator.h"
 #include "renderer/DebugRenderer.h"
 
+#include <array>
 #include <glm/glm.hpp>
 #include <imgui.h>
 

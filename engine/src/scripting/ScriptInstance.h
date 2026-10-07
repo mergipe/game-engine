@@ -49,11 +49,11 @@ namespace Engine
             return;
         }
         sol::protected_function function{m_handle[functionName]};
-        const auto result{function(m_handle, std::forward<TArgs>(args)...)};
+        const sol::protected_function_result result{function(m_handle, std::forward<TArgs>(args)...)};
         if (!result.valid()) {
+            const sol::error error{result.get<sol::error>()};
             Locator::GetLogger()->Error("Error calling {}:{} on entity {}: {}", m_scriptClass->GetName(),
-                                        functionName, m_entity.GetId().GetString(),
-                                        sol::error{result}.what());
+                                        functionName, m_entity.GetId().GetString(), error.what());
         }
     }
 } // namespace Engine

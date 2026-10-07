@@ -61,7 +61,7 @@ namespace Engine
             return;
         }
         const YAML::Node rootNode{
-            YAML::LoadFile(ResourceManager::GetResourceAbsolutePath(sceneId.GetString()))};
+            YAML::LoadFile(ResourceManager::GetResourceAbsolutePath(sceneId.GetString()).string())};
         m_currentScene = std::make_unique<Scene>(&m_ecsRegistry);
         LoadResources(rootNode);
         LoadEntities(rootNode, m_ecsRegistry);

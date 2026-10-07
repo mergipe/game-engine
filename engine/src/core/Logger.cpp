@@ -1,5 +1,6 @@
 #include "Logger.h"
 
+#include "OS.h"
 #include "StringId.h"
 
 #include <spdlog/sinks/basic_file_sink.h>
@@ -48,8 +49,8 @@ namespace Engine
     void Logger::Init()
     {
         auto level{Level::trace};
-        if (const char* levelNameFromEnv{std::getenv(s_levelEnvVariableName)}) {
-            const auto sid{StringId(levelNameFromEnv)};
+        if (const auto levelNameFromEnv{OS::GetEnv(s_levelEnvVariableName)}) {
+            const auto sid{StringId{levelNameFromEnv.value().c_str()}};
             if (const std::optional levelFromEnv{ParseLevel(sid)};
                 levelFromEnv && levelFromEnv.value() > level) {
                 level = levelFromEnv.value();
@@ -64,9 +65,9 @@ namespace Engine
 
     void Logger::AddFileSink(const std::filesystem::path& logFilePath)
     {
-        const auto file_sink{std::make_shared<spdlog::sinks::basic_file_sink_mt>(logFilePath.c_str(), true)};
+        const auto file_sink{std::make_shared<spdlog::sinks::basic_file_sink_mt>(logFilePath.string(), true)};
         m_logger->sinks().push_back(file_sink);
-        Info("Added file sink to logger ({})", logFilePath.c_str());
+        Info("Added file sink to logger ({})", logFilePath.string());
     }
 
     void Logger::SetLevel(Level level) { m_logger->set_level(static_cast<spdlog::level::level_enum>(level)); }
