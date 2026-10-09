@@ -100,3 +100,8 @@ target_include_directories(sol SYSTEM INTERFACE sol/include)
 
 add_library(entt INTERFACE)
 target_include_directories(entt SYSTEM INTERFACE entt/src)
+
+if (ENABLE_SANITIZERS)
+    target_link_libraries(spdlog PUBLIC sanitizer_flags)
+    target_link_libraries(yaml-cpp PUBLIC sanitizer_flags)
+endif ()

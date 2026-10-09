@@ -48,8 +48,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE box2d entt glad glm imgui luajit s
 target_link_libraries(${PROJECT_NAME} PRIVATE ${OPENGL_LIBRARIES})
 target_compile_definitions(${PROJECT_NAME} PRIVATE SOL_ALL_SAFETIES_ON=1 SOL_LUAJIT=1 ENGINE_BASE_DIR="${CMAKE_SOURCE_DIR}")
 
-if (ENABLE_DEVELOPER_MODE)
-    message("Setting developer mode compiler flags")
+if (ENABLE_WARNINGS)
     target_compile_options(${PROJECT_NAME} PRIVATE
             $<$<CXX_COMPILER_ID:GNU,Clang>:
             -Wall
@@ -68,6 +67,14 @@ if (ENABLE_DEVELOPER_MODE)
             /bigobj
             >
     )
+endif ()
+
+if (ENABLE_ASSERTIONS)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE ASSERTIONS_ENABLED=1)
+endif ()
+
+if (ENABLE_SANITIZERS)
+    target_link_libraries(${PROJECT_NAME} PRIVATE sanitizer_flags)
 endif ()
 
 if (WIN32)

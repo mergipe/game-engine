@@ -7,7 +7,29 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/Debug",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug"
+        "CMAKE_BUILD_TYPE": "Debug",
+        "ENABLE_ASSERTIONS": "ON"
+      }
+    },
+    {
+      "name": "debug-san",
+      "displayName": "DebugSan",
+      "inherits": "debug",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/DebugSan",
+      "cacheVariables": {
+        "ENABLE_SANITIZERS": "ON",
+        "ENABLE_ASSERTIONS": "ON"
+      }
+    },
+    {
+      "name": "dev",
+      "displayName": "Dev",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/Dev",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "ENABLE_ASSERTIONS": "ON"
       }
     },
     {
@@ -18,15 +40,6 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       }
-    },
-    {
-      "name": "dev",
-      "displayName": "Dev",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/Dev",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Dev"
-      }
     }
   ],
   "buildPresets": [
@@ -35,12 +48,16 @@
       "configurePreset": "debug"
     },
     {
-      "name": "release",
-      "configurePreset": "release"
+      "name": "debug-san",
+      "configurePreset": "debug-san"
     },
     {
       "name": "dev",
       "configurePreset": "dev"
+    },
+    {
+      "name": "release",
+      "configurePreset": "release"
     }
   ]
 }

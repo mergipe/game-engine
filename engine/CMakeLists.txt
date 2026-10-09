@@ -2,31 +2,20 @@ cmake_minimum_required(VERSION 3.15)
 project(GameEngine LANGUAGES CXX C)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-option(ENABLE_DEVELOPER_MODE "Enable developer mode" ON)
+option(ENABLE_WARNINGS "Enable warning flags" ON)
+option(ENABLE_SANITIZERS "Enable ASan and UBSan" OFF)
+option(ENABLE_ASSERTIONS "Enable assertions" OFF)
 
-if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
-    get_property(isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
-    if (isMultiConfig)
-        if (NOT Dev IN_LIST CMAKE_CONFIGURATION_TYPES)
-            list(APPEND CMAKE_CONFIGURATION_TYPES Dev)
-        endif ()
-    else ()
-        set(buildTypes Debug Dev Release)
-        set(defaultBuildType Dev)
-        set(CMAKE_DEV_POSTFIX _dev)
-        set_property(CACHE CMAKE_BUILD_TYPE PROPERTY
-                STRINGS "#{buildTypes}"
-        )
-        if (NOT CMAKE_BUILD_TYPE)
-            set(CMAKE_BUILD_TYPE "${defaultBuildType}" CACHE STRING "" FORCE)
-        elseif (NOT CMAKE_BUILD_TYPE IN_LIST buildTypes)
-            message(FATAL_ERROR "Unknown build type: ${CMAKE_BUILD_TYPE}")
-        endif ()
-    endif ()
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DASSERTIONS_ENABLED -DDEBUG" CACHE STRING "" FORCE)
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DASSERTIONS_ENABLED -DDEBUG" CACHE STRING "" FORCE)
-    set(CMAKE_C_FLAGS_DEV "${CMAKE_C_FLAGS_RELWITHDEBINFO} -DASSERTIONS_ENABLED -DDEBUG" CACHE STRING "" FORCE)
-    set(CMAKE_CXX_FLAGS_DEV "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DASSERTIONS_ENABLED -DDEBUG" CACHE STRING "" FORCE)
+if (ENABLE_SANITIZERS)
+    add_library(sanitizer_flags INTERFACE)
+    target_compile_options(sanitizer_flags INTERFACE
+            $<$<CXX_COMPILER_ID:GNU,Clang>:-fsanitize=address,undefined -fno-omit-frame-pointer>
+            $<$<CXX_COMPILER_ID:MSVC>:/fsanitize=address>
+    )
+    target_link_options(sanitizer_flags INTERFACE
+            $<$<CXX_COMPILER_ID:GNU,Clang>:-fsanitize=address,undefined>
+            $<$<CXX_COMPILER_ID:MSVC>:/INCREMENTAL:NO>
+    )
 endif ()
 
 find_program(CCACHE_PROGRAM ccache)
