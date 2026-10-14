@@ -280,7 +280,7 @@ namespace Engine
                         glm::vec2{viewportSize.x, viewportSize.y}};
                     ImGui::SetCursorPos(ImVec2{screenPosition.x, screenPosition.y});
                     ImGui::TextColored(
-                        ImColor{textData.color.r, textData.color.g, textData.color.b, textData.color.a},
+                        ImColor{textData.color.r, textData.color.g, textData.color.b, textData.color.a}, "%s",
                         textData.text.data());
                 }
                 ImGui::End();

@@ -75,7 +75,7 @@ namespace Engine
                                        entity.AddComponentOnNextStep<NativeComponentType>();
                                        return sol::make_object(m_lua, ScriptComponentType{&entity});
                                    },
-                                   [this](Entity& entity) {
+                                   [](Entity& entity) {
                                        if (entity.HasComponent<NativeComponentType>()) {
                                            entity.RemoveComponentOnNextStep<NativeComponentType>();
                                        }

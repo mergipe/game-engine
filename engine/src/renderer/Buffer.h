@@ -70,9 +70,6 @@ namespace Engine
     {
     public:
         ElementBuffer();
-
-    private:
-        U32 m_size{};
     };
 
     class VertexArray

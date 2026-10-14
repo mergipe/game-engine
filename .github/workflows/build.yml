@@ -1,0 +1,43 @@
+name: build
+on: [push]
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compiler:
+          - { cc: 'gcc', cxx: 'g++', version: 14 }
+          #- { cc: 'clang', cxx: 'clang++', version: 18 }
+        build-type: [debug, debug-san, dev, release]
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install OpenGL headers
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl-dev
+      - name: Configure CMake
+        working-directory: engine
+        env:
+          CC: ${{ matrix.compiler.cc }}-${{ matrix.compiler.version }}
+          CXX: ${{ matrix.compiler.cxx }}-${{ matrix.compiler.version }}
+        run: cmake --preset ${{ matrix.build-type }} -S . -DSDL_UNIX_CONSOLE_BUILD=ON
+      - name: Build
+        working-directory: engine
+        run: cmake --build --preset ${{ matrix.build-type }}
+
+  windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        build-type: [debug, debug-san, dev, release]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: TheMrMilchmann/setup-msvc-dev@v4
+        with:
+          arch: x64
+      - name: Configure CMake
+        working-directory: engine
+        run: cmake --preset ${{ matrix.build-type }} -S .
+      - name: Build
+        working-directory: engine
+        run: cmake --build --preset ${{ matrix.build-type }}

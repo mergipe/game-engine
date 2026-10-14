@@ -10,7 +10,7 @@ namespace Engine
 {
     StringId StringId::Intern(const std::string& str)
     {
-        const StringIdHashType hash{Hash::Hash32(str.data())};
+        const auto hash{Hash::Hash32(str.data())};
         if (!s_stringIdTable.contains(hash)) {
             s_stringIdTable[hash] = std::string{str};
             Locator::GetLogger()->Trace("[StringId] Interned '{}' as '{}'", str, hash);

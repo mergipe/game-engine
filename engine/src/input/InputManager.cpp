@@ -29,7 +29,7 @@ namespace Engine
         // for now only keyboard support
         if (SDL_HasKeyboard()) {
             // the keyboard id will always be 0 because of x11 and wayland differences
-            m_inputDevices.emplace_back(InputDevice{InputDevice::Type::keyboard, 0});
+            m_inputDevices.emplace_back(InputDevice{.id = {.type = InputDevice::Type::keyboard, .id = 0}});
         }
         Locator::GetLogger()->Info("Input manager initialized");
     }
